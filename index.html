@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Water Reservoir Monitoring</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- MQTT browser client -->
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div>
+      <h1>Water Reservoir</h1>
+      <p>ESP32 Automatic Water Monitoring System</p>
+    </div>
+    <div id="connectionStatus" class="status offline">
+      DISCONNECTED
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="welcome">
+      <h2>System Overview</h2>
+      <p>Real-time monitoring and historical water readings.</p>
+    </section>
+
+    <section class="cards">
+
+      <div class="card">
+        <h3>Water Level</h3>
+        <div class="gauge">
+          <div id="waterLevel">--%</div>
+        </div>
+        <p>Current reservoir level</p>
+      </div>
+
+      <div class="card">
+        <h3>Pump Status</h3>
+        <div id="pumpStatus" class="value">--</div>
+        <p>Water pump operation</p>
+      </div>
+
+      <div class="card">
+        <h3>Operating Mode</h3>
+        <div id="pumpMode" class="value">--</div>
+        <p>Control mode</p>
+      </div>
+
+      <div class="card">
+        <h3>Sensor Value</h3>
+        <div id="sensorValue" class="value">--</div>
+        <p>Raw analog reading</p>
+      </div>
+
+    </section>
+
+    <section class="panel">
+      <h2>Live MQTT Connection</h2>
+
+      <div class="form-grid">
+        <input id="mqttUsername" placeholder="MQTT test username">
+        <input id="mqttPassword" type="password"
+          placeholder="MQTT test password">
+      </div>
+
+      <button id="connectMqtt">Connect MQTT</button>
+      <button id="disconnectMqtt" class="secondary">
+        Disconnect
+      </button>
+
+      <p id="mqttMessage">Waiting for connection...</p>
+      <p>Topic: waterreservoir/esp32/status</p>
+    </section>
+
+    <section class="panel">
+      <h2>Historical Database</h2>
+
+      <input id="tablesUsername" placeholder="Tables read-only username">
+      <input id="tablesPassword" type="password"
+        placeholder="Tables read-only password">
+
+      <button id="loadHistory">Load Historical Data</button>
+
+      <p id="historyMessage">Database not queried yet.</p>
+
+      <canvas id="historyChart"></canvas>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Water Level</th>
+              <th>Sensor</th>
+              <th>Pump</th>
+            </tr>
+          </thead>
+          <tbody id="historyTable">
+            <tr>
+              <td colspan="4">No historical data loaded.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>
+      Water Reservoir Monitoring System | ESP32 + EMQX
+    </footer>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
